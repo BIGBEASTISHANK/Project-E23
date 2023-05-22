@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Quest : MonoBehaviour
@@ -44,8 +45,19 @@ public class Quest : MonoBehaviour
     // QuestCompleted
     private void QuestCompleted()
     {
-        // Adding completed npc id
-        GameManager.instance.npcQuestCompletedID.Add(npcScript.NPCId);
+        // Saving Npc id completion
+        List<int> NQCIList = new List<int>(); // Creating a temp list
+
+        // Getting Pre set ids
+        if (GameManager.instance.npcQuestCompleteID.Load())
+        {
+            NQCIList = GameManager.instance.npcQuestCompleteID.GetList<int>("npcQuestCompleteIDList");
+            GameManager.instance.npcQuestCompleteID.Dispose(); // Clearing storage
+        }
+
+        NQCIList.Add(npcScript.NPCId); // Adding data to list
+        GameManager.instance.npcQuestCompleteID.Add("npcQuestCompleteIDList", NQCIList); // Adding data to save file
+        GameManager.instance.npcQuestCompleteID.Save(); // Saving data to save file
 
         // Stoping the quest
         questStart = false;

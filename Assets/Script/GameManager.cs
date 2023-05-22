@@ -1,6 +1,5 @@
 using TigerForge;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +9,9 @@ public class GameManager : MonoBehaviour
     // Variables
     [HideInInspector] public bool inAQuest;
     [HideInInspector] public int inQuestId;
-    [HideInInspector] public List<int> npcQuestCompletedID;
 
     public EasyFileSave EFSTesting;
+    public EasyFileSave npcQuestCompleteID;
     public InputManager inputManager;
 
     // Refrences
@@ -29,6 +28,7 @@ public class GameManager : MonoBehaviour
 
         // Easy Fie Save
         EFSTesting = new EasyFileSave("EFSTesting");
+        npcQuestCompleteID = new EasyFileSave("npcQuestCompleteID");
     }
 
     private void Start() => TestingORDebuggingStart();
@@ -64,6 +64,14 @@ public class GameManager : MonoBehaviour
     private void TestingORDebuggingStart()
     {
         // EFSTesting.Delete();
+        if (npcQuestCompleteID.Load())
+        {
+            foreach (int i in npcQuestCompleteID.GetList<int>("npcQuestCompleteIDList"))
+            {
+                DLogger(i.ToString());
+            }
+            npcQuestCompleteID.Dispose();
+        }
     }
 
     // Testing Or Debugging update

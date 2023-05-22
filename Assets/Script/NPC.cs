@@ -98,15 +98,21 @@ public class NPC : MonoBehaviour
         bool value = false;
 
         // Checking if the quest is completed
-        foreach (int i in GameManager.instance.npcQuestCompletedID)
+        if (GameManager.instance.npcQuestCompleteID.Load())
         {
-            if (i == NPCId)
+            foreach (int i in GameManager.instance.npcQuestCompleteID.GetList<int>("npcQuestCompleteIDList"))
             {
-                value = true;
-                break;
+                if (i == NPCId)
+                {
+                    value = true;
+                    break;
+                }
+                else
+                    value = false;
             }
-            else
-                value = false;
+
+            // Clearing storage
+            GameManager.instance.npcQuestCompleteID.Dispose();
         }
 
         // Returning value
